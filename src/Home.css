@@ -127,4 +127,57 @@
   }
 }
 
+@media (max-width: 768px) {
+  .profile-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Overlay text on image */
+  .text-section {
+    position: absolute;
+    bottom: 15%; /* adjust position */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.4); /* optional readability */
+    border-radius: 10px;
+    z-index: 2;
+  }
+
+  .header-name {
+    font-size: 1.8rem;
+  }
+
+  .job-title {
+    font-size: 1rem;
+  }
+
+  .experience-text {
+    font-size: 0.9rem;
+  }
+
+  /* Keep social icons pinned bottom-left */
+  .social-icons {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .social-icons img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .contact-button {
+    font-size: 14px;
+    padding: 0.5rem 1.2rem;
+  }
+}
 
