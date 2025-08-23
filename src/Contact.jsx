@@ -71,36 +71,35 @@
 // export default Contact;
 
 
-
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Contact.css';
 import { database, auth } from './firebase';
 import { ref, push } from 'firebase/database';
+import { onAuthStateChanged } from 'firebase/auth'; // make sure to import this
 
 function Contact() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
+  const [user, setUser] = useState(null); // store current user
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // ✅ wait for user to be signed in
-    // const user = auth.currentUser;
-    // if (!user) {
-    //   alert("Still signing in... please try again.");
-    //   return;
-    // }
-
-    useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) setAuthReady(true);
+  // ✅ useEffect at top level of component
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) setUser(currentUser);
     });
     return () => unsubscribe();
   }, []);
 
-    // ✅ use push() for unique IDs
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      alert('Still signing in... please try again.');
+      return;
+    }
+
     const contactRef = ref(database, 'contacts');
     push(contactRef, {
       owner: user.uid,
@@ -160,6 +159,3 @@ function Contact() {
 }
 
 export default Contact;
-
-
-
