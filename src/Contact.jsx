@@ -87,11 +87,18 @@ function Contact() {
     e.preventDefault();
 
     // ✅ wait for user to be signed in
-    const user = auth.currentUser;
-    if (!user) {
-      alert("Still signing in... please try again.");
-      return;
-    }
+    // const user = auth.currentUser;
+    // if (!user) {
+    //   alert("Still signing in... please try again.");
+    //   return;
+    // }
+
+    useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) setAuthReady(true);
+    });
+    return () => unsubscribe();
+  }, []);
 
     // ✅ use push() for unique IDs
     const contactRef = ref(database, 'contacts');
@@ -153,4 +160,5 @@ function Contact() {
 }
 
 export default Contact;
+
 
