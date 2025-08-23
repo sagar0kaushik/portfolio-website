@@ -72,11 +72,10 @@
 
 
 
-
 import React, { useState } from 'react';
 import './Contact.css';
 import { database, auth } from './firebase';
-import { ref, set } from 'firebase/database';
+import { ref, push } from 'firebase/database';
 
 function Contact() {
   const [name, setName] = useState('');
@@ -87,19 +86,21 @@ function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // ✅ wait for user to be signed in
     const user = auth.currentUser;
     if (!user) {
-      alert("Not signed in!");
+      alert("Still signing in... please try again.");
       return;
     }
 
-    const contactId = Date.now();
-
-    set(ref(database, 'contacts/' + contactId), {
-      owner: user.uid,   // ✅ required by rules
+    // ✅ use push() for unique IDs
+    const contactRef = ref(database, 'contacts');
+    push(contactRef, {
+      owner: user.uid,
       name,
       email,
       message,
+      timestamp: new Date().toISOString(),
     })
       .then(() => {
         setSuccess(true);
@@ -152,3 +153,4 @@ function Contact() {
 }
 
 export default Contact;
+
