@@ -72,7 +72,7 @@
 
 
 
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import './Contact.css';
 import { database, auth } from './firebase';
 import { ref, push } from 'firebase/database';
@@ -160,5 +160,6 @@ function Contact() {
 }
 
 export default Contact;
+
 
 
